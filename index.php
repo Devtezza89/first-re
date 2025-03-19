@@ -1,11 +1,9 @@
 <?php
-// Start session only once at the top
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 require_once 'authentication.php';
 
-// Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['signup'])) {
         handleSignup();
@@ -16,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Determine form to show
 $form = isset($_GET['form']) ? $_GET['form'] : 'signup';
 if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
     header('Location: welcome.php');
@@ -30,23 +27,29 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authentication</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
 </head>
 <body>
     <section class="auth-container">
-        <!-- Sign-Up Form -->
         <div class="form-box <?php echo $form !== 'signup' ? 'hidden' : ''; ?>" id="signup-form">
             <h2>Sign Up</h2>
             <form method="POST">
                 <input type="hidden" name="signup" value="1">
                 <div class="input-group">
                     <label for="first-name">First Name</label>
-                    <input type="text" id="first-name" name="first_name" placeholder="First Name" required value="<?php echo isset($_SESSION['form_data']['first_name']) ? htmlspecialchars($_SESSION['form_data']['first_name']) : ''; ?>">
+                    <input type="text" id="first-name" name="first_name" placeholder="First Name" pattern="[A-Za-z]+" title="Only letters are allowed" required value="<?php echo isset($_SESSION['form_data']['first_name']) ? htmlspecialchars($_SESSION['form_data']['first_name']) : ''; ?>">
+                    <?php if (isset($_SESSION['errors']['first_name'])): ?>
+                        <span class="error"><?php echo $_SESSION['errors']['first_name']; ?></span>
+                    <?php endif; ?>
                 </div>
                 <div class="input-group">
                     <label for="last-name">Last Name</label>
-                    <input type="text" id="last-name" name="last_name" placeholder="Last Name" required value="<?php echo isset($_SESSION['form_data']['last_name']) ? htmlspecialchars($_SESSION['form_data']['last_name']) : ''; ?>">
+                    <input type="text" id="last-name" name="last_name" placeholder="Last Name" pattern="[A-Za-z]+" title="Only letters are allowed" required value="<?php echo isset($_SESSION['form_data']['last_name']) ? htmlspecialchars($_SESSION['form_data']['last_name']) : ''; ?>">
+                    <?php if (isset($_SESSION['errors']['last_name'])): ?>
+                        <span class="error"><?php echo $_SESSION['errors']['last_name']; ?></span>
+                    <?php endif; ?>
                 </div>
                 <div class="input-group">
                     <label for="email">Email</label>
@@ -64,7 +67,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                 </div>
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <input type="password" id="password" name="password" placeholder="Password (min 8 chars, with upper, lower, number, special char)" required>
                     <?php if (isset($_SESSION['errors']['password'])): ?>
                         <span class="error"><?php echo $_SESSION['errors']['password']; ?></span>
                     <?php endif; ?>
@@ -78,7 +81,6 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
             </form>
         </div>
 
-        <!-- Login Form -->
         <div class="form-box <?php echo $form !== 'login' ? 'hidden' : ''; ?>" id="login-form">
             <h2>Log In</h2>
             <form method="POST">
@@ -100,7 +102,6 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
             </form>
         </div>
 
-        <!-- Forgot Password Form -->
         <div class="form-box <?php echo $form !== 'reset' ? 'hidden' : ''; ?>" id="forgot-password-form">
             <h2>Reset Password</h2>
             <form method="POST">
