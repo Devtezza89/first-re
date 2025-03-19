@@ -1,4 +1,8 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 function getDBConnection() {
     $conn = new mysqli("localhost", "root", "", "ecommerce_db");
     if ($conn->connect_error) {
@@ -19,8 +23,17 @@ function handleSignup() {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
+    if (empty($first_name) || !preg_match("/^[a-zA-Z]+$/", $first_name)) {
+        $_SESSION['errors']['first_name'] = "First name must contain only letters and cannot be empty";
+    }
+    if (empty($last_name) || !preg_match("/^[a-zA-Z]+$/", $last_name)) {
+        $_SESSION['errors']['last_name'] = "Last name must contain only letters and cannot be empty";
+    }
+
     if (strlen($password) < 8) {
-        $_SESSION['errors']['password'] = "Password must be at least 8 characters";
+        $_SESSION['errors']['password'] = "Password must be at least 8 characters long";
+    } elseif (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/", $password)) {
+        $_SESSION['errors']['password'] = "Password must include uppercase, lowercase, a number, and a special character";
     } elseif ($password !== $confirm_password) {
         $_SESSION['errors']['password'] = "Passwords do not match";
     }
@@ -55,7 +68,7 @@ function handleSignup() {
             header("Location: index.php?form=login");
             exit;
         } else {
-            $_SESSION['errors']['email'] = "Registration failed. Try again.";
+            $_SESSION['errors']['general'] = "Registration failed: " . $stmt->error;
         }
         $stmt->close();
     }
