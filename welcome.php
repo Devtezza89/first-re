@@ -9,6 +9,7 @@ if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
 
 if (isset($_GET['logout'])) {
     session_destroy();
+    setcookie('remember_me', '', time() - 3600, '/', '', true, true);
     header("Location: index.php?form=login");
     exit;
 }
