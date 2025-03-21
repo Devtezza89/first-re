@@ -118,6 +118,29 @@ a:hover {
     text-decoration: none;
 }
 
+.password-container {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #666;
+}
+
+.toggle-password:hover {
+    color: #007bff;
+}
+
+input[type="password"],
+input[type="text"] {
+    padding-right: 40px; /* Space for the toggle icon */
+}
+
 @media (max-width: 480px) {
     .auth-container {
         padding: 20px;
