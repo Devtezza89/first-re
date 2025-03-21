@@ -65,16 +65,18 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                         <span class="error"><?php echo $_SESSION['errors']['username']; ?></span>
                     <?php endif; ?>
                 </div>
-                <div class="input-group">
+                <div class="input-group password-container">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" placeholder="Password (min 8 chars, with upper, lower, number, special char)" required>
+                    <span class="toggle-password" onclick="togglePassword('password')">👁</span>
                     <?php if (isset($_SESSION['errors']['password'])): ?>
                         <span class="error"><?php echo $_SESSION['errors']['password']; ?></span>
                     <?php endif; ?>
                 </div>
-                <div class="input-group">
+                <div class="input-group password-container">
                     <label for="confirm-password">Confirm Password</label>
                     <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm Password" required>
+                    <span class="toggle-password" onclick="togglePassword('confirm-password')">👁</span>
                 </div>
                 <button type="submit">Sign Up</button>
                 <p>Already have an account? <a href="#" onclick="showLogin()">Log In</a></p>
@@ -89,9 +91,10 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
                     <label for="login-username">Username</label>
                     <input type="text" id="login-username" name="username" placeholder="Username" required>
                 </div>
-                <div class="input-group">
+                <div class="input-group password-container">
                     <label for="login-password">Password</label>
                     <input type="password" id="login-password" name="password" placeholder="Password" required>
+                    <span class="toggle-password" onclick="togglePassword('login-password')">👁</span>
                     <?php if (isset($_SESSION['errors']['login'])): ?>
                         <span class="error"><?php echo $_SESSION['errors']['login']; ?></span>
                     <?php endif; ?>
