@@ -32,7 +32,7 @@ function handleSignup() {
 
     if (strlen($password) < 8) {
         $_SESSION['errors']['password'] = "Password must be at least 8 characters long";
-    } elseif (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/", $password)) {
+    } elseif (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).+$/", $password)) {
         $_SESSION['errors']['password'] = "Password must include uppercase, lowercase, a number, and a special character";
     } elseif ($password !== $confirm_password) {
         $_SESSION['errors']['password'] = "Passwords do not match";
