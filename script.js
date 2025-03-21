@@ -15,3 +15,15 @@ function showForgotPassword() {
     document.getElementById('login-form').classList.add('hidden');
     document.getElementById('signup-form').classList.add('hidden');
 }
+
+function togglePassword(fieldId) {
+    const input = document.getElementById(fieldId);
+    const toggle = input.nextElementSibling;
+    if (input.type === 'password') {
+        input.type = 'text';
+        toggle.innerHTML = '👀'; // Eye-off icon
+    } else {
+        input.type = 'password';
+        toggle.innerHTML = '👁'; // Eye icon
+    }
+}
